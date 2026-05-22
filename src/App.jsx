@@ -6,23 +6,13 @@ import {
 } from "react-router-dom";
 import AppLayout from "./AppLayout";
 import Error from "./ui/Error";
+import Modal from "./components/Modal";
 
 const router = createBrowserRouter([
   {
+    path: "/",
     element: <AppLayout />,
     errorElement: <Error />,
-    children: [
-      {
-        path: "/",
-        element: <div>/ Element</div>,
-        errorElement: <Error />,
-      },
-      {
-        path: "/me",
-        element: <div>Me here</div>,
-        errorElement: <Error />,
-      },
-    ],
   },
 ]);
 // ─── APP ──────────────────────────────────────────────────────────────────

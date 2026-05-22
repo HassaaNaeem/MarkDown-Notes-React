@@ -12,6 +12,7 @@ function Sidebar({
   notes,
   activeNoteId,
   setActiveNoteId,
+  setIsModalOpen,
 }) {
   const allTags = [
     ...new Set(notes.map((note) => note.tags.map((tag) => tag)).flat()),
@@ -24,7 +25,7 @@ function Sidebar({
   return (
     <aside className="w-64 shrink-0 flex flex-col border-r border-gray-100">
       {/* Sidebar header */}
-      <SidebarHeader />
+      <SidebarHeader setIsModalOpen={setIsModalOpen} />
       {/* Search input */}
       <Search search={search} setSearch={setSearch} />
 
@@ -41,6 +42,7 @@ function Sidebar({
         </button>
         {allTags.map((tag) => (
           <button
+            key={tag}
             onClick={handleSelectTag}
             className={`text-xs px-2 py-0.5 rounded-full border ${activeTag == tag ? "bg-gray-900 text-white border-gray-900" : " text-gray-500 border-gray-200 hover:border-gray-400"} `}
           >

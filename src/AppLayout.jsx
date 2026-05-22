@@ -2,6 +2,7 @@ import { useState } from "react";
 
 import ReactMarkdown from "react-markdown";
 import Sidebar from "./components/Sidebar";
+import Modal from "./components/Modal";
 // ─── DUMMY DATA — replace this with state you build ───────────────────────
 const DUMMY_NOTES = [
   {
@@ -33,6 +34,7 @@ function AppLayout() {
   const [search, setSearch] = useState("");
   const [activeTag, setActiveTag] = useState(null);
   const [mode, setMode] = useState("split"); // "edit" | "preview" | "split"
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const activeNote = notes.find((n) => n.id === activeNoteId) ?? null;
 
@@ -46,14 +48,10 @@ function AppLayout() {
         note.tags.find((tag) => tag == activeTag || activeTag == null),
     );
   }
-  // if (activeTag) {
-  //   filteredNotes = notes.filter((note) =>
-  //     note.tags.find((tag) => tag == activeTag),
-  //   );
-  //   console.log(filteredNotes);
-  // }
 
-  function handleAddNote() {}
+  function handleAddNote() {
+    setActiveNoteId(null);
+  }
 
   function updateNote(id, changes) {}
 
@@ -78,6 +76,7 @@ function AppLayout() {
         activeNoteId={activeNoteId}
         setActiveNoteId={setActiveNoteId}
         notes={notes}
+        setIsModalOpen={setIsModalOpen}
       />
 
       {/* ── MAIN AREA ─────────────────────────────────────────────────── */}
@@ -196,7 +195,7 @@ function AppLayout() {
               Pick a note or create a new one
             </p>
             <button
-              onClick={handleAddNote}
+              onClick={() => setIsModalOpen(true)}
               className="text-xs px-4 py-2 bg-gray-900 text-white rounded-lg hover:bg-gray-700 transition-colors"
             >
               New note
@@ -204,6 +203,7 @@ function AppLayout() {
           </div>
         )}
       </main>
+      <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />
     </div>
   );
 }
