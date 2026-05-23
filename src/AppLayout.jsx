@@ -61,8 +61,7 @@ function AppLayout() {
       .find((note) => note.id == activeNoteId)
       .tags.push(newTag.trim().toLowerCase());
 
-    const [updatedNote] = notes.filter((note) => note.id == activeNoteId);
-    console.log(updatedNote);
+    const updatedNote = notes.filter((note) => note.id == activeNoteId)[0];
 
     setNotes((notes) => [
       updatedNote,
@@ -71,7 +70,20 @@ function AppLayout() {
     setNewTag("");
   }
 
-  function handleRemoveTag(tag) {}
+  function handleRemoveTag(tag) {
+    const updatedTags = notes
+      .find((note) => note.id == activeNoteId)
+      .tags.filter((t) => t != tag);
+    console.log(updatedTags);
+
+    const updatedNotes = notes.filter((note) => {
+      if (note.id == activeNoteId) {
+        note.tags = updatedTags;
+      }
+      return note;
+    });
+    setNotes(updatedNotes);
+  }
 
   return (
     <div className="flex h-screen bg-white text-gray-900 overflow-hidden">
@@ -150,9 +162,6 @@ function AppLayout() {
                   </button>
                 </span>
               ))}
-              {/* TODO: add a small input here for typing a new tag */}
-              {/* On Enter key → call handleAddTag */}
-              {/* Clear the input after adding */}
               <input
                 type="text"
                 placeholder="Add tag…"
