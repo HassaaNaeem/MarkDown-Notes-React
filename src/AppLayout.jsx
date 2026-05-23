@@ -3,6 +3,7 @@ import { useState } from "react";
 import ReactMarkdown from "react-markdown";
 import Sidebar from "./components/Sidebar";
 import Modal from "./components/Modal";
+import toast, { Toaster } from "react-hot-toast";
 // ─── DUMMY DATA — replace this with state you build ───────────────────────
 const DUMMY_NOTES = [
   {
@@ -56,6 +57,14 @@ function AppLayout() {
 
   function handleAddTag(e) {
     if (e.key !== "Enter") return;
+    const tagAlreadyExists = [
+      ...new Set(notes.map((note) => note.tags.map((tag) => tag)).flat()),
+    ].includes(newTag.trim().toLowerCase());
+
+    if (tagAlreadyExists) {
+      toast.error("This tag already exists on this note");
+      return;
+    }
 
     const tags = notes
       .find((note) => note.id == activeNoteId)
@@ -83,6 +92,7 @@ function AppLayout() {
       return note;
     });
     setNotes(updatedNotes);
+    setActiveTag(null);
   }
 
   return (
@@ -221,6 +231,26 @@ function AppLayout() {
         onClose={() => setIsModalOpen(false)}
         setNotes={setNotes}
         setActiveNoteId={setActiveNoteId}
+      />
+      <Toaster
+        position="top-right"
+        gutter={12}
+        containerStyle={{ margin: "8px" }}
+        toastOptions={{
+          success: {
+            duration: 3000,
+          },
+          error: {
+            duration: 5000,
+          },
+          style: {
+            fontSize: "16px",
+            maxWidth: "500px",
+            padding: "16px 24px",
+            backgroundColor: "#ffffff",
+            color: "#0f0f0f",
+          },
+        }}
       />
     </div>
   );
