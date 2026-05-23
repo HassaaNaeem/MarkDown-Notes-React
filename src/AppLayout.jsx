@@ -30,14 +30,12 @@ const DUMMY_NOTES = [
 
 function AppLayout() {
   const [notes, setNotes] = useState(DUMMY_NOTES);
-
   const [activeNoteId, setActiveNoteId] = useState(null);
-  console.log(activeNoteId);
-
   const [search, setSearch] = useState("");
   const [activeTag, setActiveTag] = useState(null);
   const [mode, setMode] = useState("split"); // "edit" | "preview" | "split"
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [newTag, setNewTag] = useState("");
 
   const activeNote = notes.find((n) => n.id === activeNoteId) ?? null;
 
@@ -56,9 +54,21 @@ function AppLayout() {
 
   function handleDeleteNote(id) {}
 
-  function handleAddTag(e, tagInput, setTagInput) {
+  function handleAddTag(e) {
     if (e.key !== "Enter") return;
-    // your logic here
+
+    const tags = notes
+      .find((note) => note.id == activeNoteId)
+      .tags.push(newTag.trim().toLowerCase());
+
+    const [updatedNote] = notes.filter((note) => note.id == activeNoteId);
+    console.log(updatedNote);
+
+    setNotes((notes) => [
+      updatedNote,
+      ...notes.filter((note) => note.id != activeNoteId),
+    ]);
+    setNewTag("");
   }
 
   function handleRemoveTag(tag) {}
@@ -147,10 +157,9 @@ function AppLayout() {
                 type="text"
                 placeholder="Add tag…"
                 className="text-xs text-gray-500 placeholder-gray-300 outline-none w-20"
-                onKeyDown={(e) => {
-                  // TODO: call handleAddTag(e, tagInput, setTagInput)
-                  // You'll need a local tagInput state for this input
-                }}
+                value={newTag}
+                onChange={(e) => setNewTag(e.target.value)}
+                onKeyDown={(e) => handleAddTag(e)}
               />
             </div>
 
@@ -173,10 +182,6 @@ function AppLayout() {
               {/* Preview pane — show when mode is "preview" or "split" */}
               {(mode === "preview" || mode === "split") && (
                 <div className="flex-1 overflow-y-auto px-8 py-5 prose prose-sm prose-gray max-w-none">
-                  {/* TODO: render activeNote.body through <ReactMarkdown> */}
-                  {/* Install: npm install react-markdown */}
-                  {/* Then: import ReactMarkdown from "react-markdown" */}
-                  {/* Then: <ReactMarkdown>{activeNote.body}</ReactMarkdown> */}
                   <ReactMarkdown>
                     {activeNote.body || "Preview will appear here…"}
                   </ReactMarkdown>
