@@ -1,27 +1,32 @@
-// NewNoteModal.jsx
-// Drop this into src/ and import it in App.jsx
-//
-// Usage in App.jsx:
-//   const [isModalOpen, setIsModalOpen] = useState(false)
-//   <NewNoteModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />
-//   Change the "+ New" button to: onClick={() => setIsModalOpen(true)}
+import { useForm } from "react-hook-form";
+import { v4 as uuidv4 } from "uuid";
 
-export default function Modal({ isOpen, onClose }) {
+export default function Modal({ isOpen, onClose, setNotes, setActiveNoteId }) {
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors },
+  } = useForm();
+
   if (!isOpen) return null;
 
-  function handleSubmit(e) {
-    e.preventDefault();
-    // TODO: replace this with React Hook Form's handleSubmit
-    // 1. useForm() at the top of this component
-    // 2. register() each input
-    // 3. handleSubmit(onSubmit) on the <form>
-    // 4. In onSubmit: call addNote() from props or context, then onClose()
+  function handleOverlayClick(e) {
+    if (e.target == e.currentTarget) onClose();
   }
 
-  function handleOverlayClick(e) {
-    // TODO: only close if the click was on the overlay itself, not the modal box
-    // Hint: check if e.target === e.currentTarget
+  function handleAddNote(data) {
+    const newNote = {
+      id: uuidv4(),
+      ...data,
+      tags: data?.tags?.split(",").map((tag) => tag.trim().toLowerCase()),
+      updatedAt: new Date().toISOString().slice(0, 10),
+    };
+    setNotes((notes) => [newNote, ...notes]);
+
+    reset();
     onClose();
+    setActiveNoteId(newNote.id);
   }
 
   return (
@@ -45,7 +50,10 @@ export default function Modal({ isOpen, onClose }) {
         </div>
 
         {/* Form */}
-        <form onSubmit={handleSubmit} className="space-y-4">
+        <form
+          onSubmit={handleSubmit((data) => handleAddNote(data))}
+          className="space-y-4"
+        >
           {/* Title */}
           <div>
             <label className="block text-xs text-gray-500 mb-1.5">Title</label>
@@ -53,11 +61,21 @@ export default function Modal({ isOpen, onClose }) {
               type="text"
               placeholder="Note title…"
               autoFocus
-              // TODO: {...register("title", { required: true })}
+              {...register("title", { required: true })}
               className="w-full text-sm px-3 py-2.5 rounded-lg border border-gray-200 outline-none focus:border-gray-400 placeholder-gray-300 transition-colors"
             />
             {/* TODO: show error message here */}
             {/* {errors.title && <p className="text-xs text-red-400 mt-1">Title is required</p>} */}
+          </div>
+
+          <div>
+            <label className="block text-xs text-gray-500 mb-1.5">Body</label>
+            <input
+              type="text"
+              placeholder="Note body..."
+              {...register("body", { required: true })}
+              className="w-full text-sm px-3 py-2.5 rounded-lg border border-gray-200 outline-none focus:border-gray-400 placeholder-gray-300 transition-colors"
+            />
           </div>
 
           {/* Tags */}
@@ -71,9 +89,7 @@ export default function Modal({ isOpen, onClose }) {
             <input
               type="text"
               placeholder="react, notes, work…"
-              // TODO: {...register("tags")}
-              // TODO: in onSubmit, split this string by comma:
-              //   tags: data.tags.split(",").map(t => t.trim()).filter(Boolean)
+              {...register("tags", { required: true })}
               className="w-full text-sm px-3 py-2.5 rounded-lg border border-gray-200 outline-none focus:border-gray-400 placeholder-gray-300 transition-colors"
             />
           </div>

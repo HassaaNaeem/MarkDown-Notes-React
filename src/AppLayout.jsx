@@ -30,7 +30,10 @@ const DUMMY_NOTES = [
 
 function AppLayout() {
   const [notes, setNotes] = useState(DUMMY_NOTES);
+
   const [activeNoteId, setActiveNoteId] = useState(null);
+  console.log(activeNoteId);
+
   const [search, setSearch] = useState("");
   const [activeTag, setActiveTag] = useState(null);
   const [mode, setMode] = useState("split"); // "edit" | "preview" | "split"
@@ -47,10 +50,6 @@ function AppLayout() {
         note.title.toLowerCase().includes(search.toLowerCase().trim()) &&
         note.tags.find((tag) => tag == activeTag || activeTag == null),
     );
-  }
-
-  function handleAddNote() {
-    setActiveNoteId(null);
   }
 
   function updateNote(id, changes) {}
@@ -203,7 +202,12 @@ function AppLayout() {
           </div>
         )}
       </main>
-      <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />
+      <Modal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        setNotes={setNotes}
+        setActiveNoteId={setActiveNoteId}
+      />
     </div>
   );
 }
