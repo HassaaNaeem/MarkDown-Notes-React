@@ -53,7 +53,10 @@ function AppLayout() {
 
   function updateNote(id, changes) {}
 
-  function handleDeleteNote(id) {}
+  function handleDeleteNote(id) {
+    setNotes((notes) => notes.filter((note) => note.id != id));
+    setActiveNoteId(null);
+  }
 
   function handleAddTag(e) {
     if (e.key !== "Enter") return;
