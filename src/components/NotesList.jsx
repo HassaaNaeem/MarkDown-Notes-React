@@ -15,7 +15,13 @@ import {
 } from "@dnd-kit/sortable";
 
 function NotesList({ filteredNotes, activeNoteId, setActiveNoteId, setNotes }) {
-  const sensors = useSensors(useSensor(PointerSensor));
+  const sensors = useSensors(
+    useSensor(PointerSensor, {
+      activationConstraint: {
+        distance: 6,
+      },
+    }),
+  );
 
   function handleDragEnd(event) {
     const { active, over } = event;

@@ -2,7 +2,7 @@ import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 import React from "react";
 
-function Note({ note, setActiveNoteId, activeNoteId, isActive }) {
+function Note({ note, setActiveNoteId, activeNoteId }) {
   const {
     attributes,
     listeners,
@@ -10,30 +10,30 @@ function Note({ note, setActiveNoteId, activeNoteId, isActive }) {
     transform,
     transition,
     isDragging,
-  } = useSortable({ id: note.id });
+  } = useSortable({
+    id: note.id,
+  });
 
   const style = {
     transform: CSS.Transform.toString(transform),
-    transition: transition || "transform 200ms cubic-bezier(0.2, 0, 0, 1)",
-    opacity: isDragging ? 0.85 : 1,
-    zIndex: isDragging ? 50 : "auto",
+    transition: transition || "transform 150ms ease",
+    opacity: isDragging ? 0.7 : 1,
   };
 
   return (
     <li
       ref={setNodeRef}
       style={style}
-      {...listeners}
       {...attributes}
+      {...listeners}
       onClick={() => setActiveNoteId(note.id)}
       className={`
-        px-3 flex py-2.5 rounded-xl
+        px-3 flex py-2.5 rounded-lg
         cursor-grab active:cursor-grabbing
-        transition-all duration-200 ease-out
+        transition-colors
         select-none
-        border border-transparent
         ${activeNoteId === note.id ? "bg-gray-100" : "hover:bg-gray-50"}
-        ${isDragging ? "scale-[1.02] shadow-2xl bg-white border-gray-200" : ""}
+        ${isDragging ? "bg-white shadow-md" : ""}
       `}
     >
       <div className="w-full">
