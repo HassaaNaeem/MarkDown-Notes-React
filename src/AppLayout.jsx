@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { cloneElement, useState } from "react";
 
 import ReactMarkdown from "react-markdown";
 import Sidebar from "./components/Sidebar";
@@ -51,7 +51,27 @@ function AppLayout() {
     );
   }
 
-  function updateNote(id, changes) {}
+  function updateNote(id, changes) {
+    if (mode != "edit") {
+      toast.error("To edit, please select edit mode");
+      return;
+    }
+
+    const note = notes.find((note) => note.id == id);
+
+    if (changes.title) {
+      setNotes((notes) => [
+        { ...note, title: changes.title },
+        ...notes.filter((note) => note.id != id),
+      ]);
+    }
+    if (changes.body) {
+      setNotes((notes) => [
+        { ...note, body: changes.body },
+        ...notes.filter((note) => note.id != id),
+      ]);
+    }
+  }
 
   function handleDeleteNote(id) {
     setNotes((notes) => notes.filter((note) => note.id != id));
@@ -87,6 +107,11 @@ function AppLayout() {
       .find((note) => note.id == activeNoteId)
       .tags.filter((t) => t != tag);
     console.log(updatedTags);
+
+    if (updatedTags < 2) {
+      toast.error("A note should contain at least 1 tag");
+      return;
+    }
 
     const updatedNotes = notes.filter((note) => {
       if (note.id == activeNoteId) {

@@ -1,3 +1,4 @@
+import MDEditor from "@uiw/react-md-editor";
 import { useForm } from "react-hook-form";
 import { v4 as uuidv4 } from "uuid";
 
@@ -70,11 +71,13 @@ export default function Modal({ isOpen, onClose, setNotes, setActiveNoteId }) {
 
           <div>
             <label className="block text-xs text-gray-500 mb-1.5">Body</label>
-            <input
-              type="text"
-              placeholder="Note body..."
+            <textarea
+              rows={5}
+              placeholder={
+                "## Heading\n\nStart writing…\n\n- list item\n- list item"
+              }
               {...register("body", { required: true })}
-              className="w-full text-sm px-3 py-2.5 rounded-lg border border-gray-200 outline-none focus:border-gray-400 placeholder-gray-300 transition-colors"
+              className="w-full text-sm font-mono px-3 py-2.5 rounded-lg border border-gray-200 outline-none focus:border-gray-400 placeholder-gray-300 transition-colors resize-none leading-relaxed"
             />
           </div>
 
