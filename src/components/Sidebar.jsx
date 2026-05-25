@@ -2,6 +2,7 @@ import React from "react";
 import SidebarHeader from "./SidebarHeader";
 import Search from "./Search";
 import NotesList from "./NotesList";
+import { useDraggable } from "@dnd-kit/react";
 
 function Sidebar({
   search,
@@ -10,6 +11,7 @@ function Sidebar({
   activeTag,
   filteredNotes,
   notes,
+  setNotes,
   activeNoteId,
   setActiveNoteId,
   setIsModalOpen,
@@ -25,7 +27,10 @@ function Sidebar({
   return (
     <aside className="w-64 shrink-0 flex flex-col border-r border-gray-100">
       {/* Sidebar header */}
-      <SidebarHeader setIsModalOpen={setIsModalOpen} />
+      <SidebarHeader
+        setIsModalOpen={setIsModalOpen}
+        setActiveNoteId={setActiveNoteId}
+      />
       {/* Search input */}
       <Search search={search} setSearch={setSearch} />
 
@@ -53,6 +58,7 @@ function Sidebar({
 
       {/* Notes list */}
       <NotesList
+        setNotes={setNotes}
         filteredNotes={filteredNotes}
         activeNoteId={activeNoteId}
         setActiveNoteId={setActiveNoteId}

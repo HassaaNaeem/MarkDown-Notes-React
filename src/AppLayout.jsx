@@ -135,6 +135,7 @@ function AppLayout() {
         activeNoteId={activeNoteId}
         setActiveNoteId={setActiveNoteId}
         notes={notes}
+        setNotes={setNotes}
         setIsModalOpen={setIsModalOpen}
       />
 
