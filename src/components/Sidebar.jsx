@@ -34,10 +34,6 @@ function Sidebar({
       {/* Search input */}
       <Search search={search} setSearch={setSearch} />
 
-      {/* Tag filter pills */}
-      {/* TODO: render allTags here as clickable pill buttons */}
-      {/* Clicking a tag sets activeTag; clicking the active tag clears it (null) */}
-      {/* Active tag pill should have a dark background */}
       <div className="px-3 pt-3 flex flex-wrap gap-1.5">
         <button
           onClick={handleSelectTag}

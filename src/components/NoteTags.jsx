@@ -1,21 +1,17 @@
 import React from "react";
+import Tag from "./Tag";
 
-function NoteTags({ activeNote, newTag, setNewTag, handleAddTag }) {
+function NoteTags({
+  activeNote,
+  newTag,
+  setNewTag,
+  handleAddTag,
+  handleRemoveTag,
+}) {
   return (
     <div className="px-8 pb-4 flex flex-wrap items-center gap-2 shrink-0">
       {activeNote.tags.map((tag) => (
-        <span
-          key={tag}
-          className="flex items-center gap-1 text-xs px-2 py-0.5 bg-gray-100 text-gray-600 rounded-full"
-        >
-          {tag}
-          <button
-            onClick={() => handleRemoveTag(tag)}
-            className="text-gray-400 hover:text-gray-700"
-          >
-            ×
-          </button>
-        </span>
+        <Tag tag={tag} handleRemoveTag={handleRemoveTag} />
       ))}
       <input
         type="text"

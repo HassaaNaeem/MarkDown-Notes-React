@@ -86,9 +86,12 @@ function AppLayout() {
 
   function handleAddTag(e) {
     if (e.key !== "Enter") return;
-    const tagAlreadyExists = [
-      ...new Set(notes.map((note) => note.tags.map((tag) => tag)).flat()),
-    ].includes(newTag.trim().toLowerCase());
+
+    const activeNote = notes.find((note) => note.id == activeNoteId);
+
+    const tagAlreadyExists = activeNote.tags.includes(
+      newTag.trim().toLowerCase(),
+    );
 
     if (tagAlreadyExists) {
       toast.error("This tag already exists on this note");
@@ -166,6 +169,7 @@ function AppLayout() {
               newTag={newTag}
               setNewTag={setNewTag}
               handleAddTag={handleAddTag}
+              handleRemoveTag={handleRemoveTag}
             />
 
             {/* Editor + Preview panes */}
