@@ -1,8 +1,10 @@
 import React from "react";
 
 import ReactMarkdown from "react-markdown";
+import useNotes from "../hooks/useNotes";
 
-function Panes({ mode, activeNote, updateNote }) {
+function Panes() {
+  const { mode, activeNote, updateNote } = useNotes();
   return (
     <div className="flex-1 flex overflow-hidden border-t border-gray-100">
       {/* Edit pane — show when mode is "edit" or "split" */}

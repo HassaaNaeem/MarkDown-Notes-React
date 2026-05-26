@@ -1,13 +1,10 @@
 import React from "react";
 import Tag from "./Tag";
+import useNotes from "../hooks/useNotes";
 
-function NoteTags({
-  activeNote,
-  newTag,
-  setNewTag,
-  handleAddTag,
-  handleRemoveTag,
-}) {
+function NoteTags() {
+  const { activeNote, newTag, handleAddTag, handleRemoveTag, handleNewTag } =
+    useNotes();
   return (
     <div className="px-8 pb-4 flex flex-wrap items-center gap-2 shrink-0">
       {activeNote.tags.map((tag) => (
@@ -18,7 +15,7 @@ function NoteTags({
         placeholder="Add tag…"
         className="text-xs text-gray-500 placeholder-gray-300 outline-none w-20"
         value={newTag}
-        onChange={(e) => setNewTag(e.target.value)}
+        onChange={(e) => handleNewTag(e.target.value)}
         onKeyDown={(e) => handleAddTag(e)}
       />
     </div>

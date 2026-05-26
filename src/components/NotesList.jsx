@@ -13,8 +13,9 @@ import {
   SortableContext,
   verticalListSortingStrategy,
 } from "@dnd-kit/sortable";
+import useNotes from "../hooks/useNotes";
 
-function NotesList({ filteredNotes, activeNoteId, setActiveNoteId, setNotes }) {
+function NotesList() {
   const sensors = useSensors(
     useSensor(PointerSensor, {
       activationConstraint: {
@@ -23,14 +24,15 @@ function NotesList({ filteredNotes, activeNoteId, setActiveNoteId, setNotes }) {
     }),
   );
 
+  const { renderNotes, filteredNotes } = useNotes();
+
   function handleDragEnd(event) {
     const { active, over } = event;
     if (!over || active.id === over.id) return;
 
     const oldIndex = filteredNotes.findIndex((n) => n.id === active.id);
     const newIndex = filteredNotes.findIndex((n) => n.id === over.id);
-    setNotes(arrayMove(filteredNotes, oldIndex, newIndex));
-    // TODO: if you have a reorderNotes() in useNotes hook, call that instead of setNotes
+    renderNotes(filteredNotes, oldIndex, newIndex);
   }
 
   return (
@@ -47,12 +49,7 @@ function NotesList({ filteredNotes, activeNoteId, setActiveNoteId, setNotes }) {
           <ul className="flex-1 overflow-y-auto mt-2 px-2 pb-4 space-y-0.5">
             {filteredNotes.map((note) => (
               <>
-                <Note
-                  note={note}
-                  setActiveNoteId={setActiveNoteId}
-                  activeNoteId={activeNoteId}
-                  isActive={note.id === activeNoteId}
-                />
+                <Note note={note} />
               </>
             ))}
           </ul>

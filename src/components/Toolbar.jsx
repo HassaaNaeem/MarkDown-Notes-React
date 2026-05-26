@@ -1,6 +1,9 @@
 import React from "react";
+import useNotes from "../hooks/useNotes";
 
-function Toolbar({ mode, setMode, handleDeleteNote, activeNote }) {
+function Toolbar() {
+  const { mode, handleDeleteNote, activeNote, handleMode } = useNotes();
+
   return (
     <div className="flex items-center justify-between px-6 py-3 border-b border-gray-100 shrink-0">
       {/* Mode toggle */}
@@ -8,7 +11,7 @@ function Toolbar({ mode, setMode, handleDeleteNote, activeNote }) {
         {["edit", "split", "preview"].map((m) => (
           <button
             key={m}
-            onClick={() => setMode(m)}
+            onClick={() => handleMode(m)}
             className={`text-xs px-3 py-1 rounded-md capitalize transition-colors ${
               mode === m
                 ? "bg-white text-gray-900 shadow-sm border border-gray-100 font-medium"

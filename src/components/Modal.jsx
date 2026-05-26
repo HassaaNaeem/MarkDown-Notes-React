@@ -1,8 +1,9 @@
 import MDEditor from "@uiw/react-md-editor";
 import { useForm } from "react-hook-form";
-import { v4 as uuidv4 } from "uuid";
 
-export default function Modal({ isOpen, onClose, setNotes, setActiveNoteId }) {
+import useNotes from "../hooks/useNotes";
+
+export default function Modal() {
   const {
     register,
     handleSubmit,
@@ -10,24 +11,12 @@ export default function Modal({ isOpen, onClose, setNotes, setActiveNoteId }) {
     formState: { errors },
   } = useForm();
 
-  if (!isOpen) return null;
+  const { isModalOpen, closeModal, handleAddNote } = useNotes();
+
+  if (!isModalOpen) return null;
 
   function handleOverlayClick(e) {
-    if (e.target == e.currentTarget) onClose();
-  }
-
-  function handleAddNote(data) {
-    const newNote = {
-      id: uuidv4(),
-      ...data,
-      tags: data?.tags?.split(",").map((tag) => tag.trim().toLowerCase()),
-      updatedAt: new Date().toISOString().slice(0, 10),
-    };
-    setNotes((notes) => [newNote, ...notes]);
-
-    reset();
-    onClose();
-    setActiveNoteId(newNote.id);
+    if (e.target == e.currentTarget) closeModal();
   }
 
   return (
@@ -43,7 +32,7 @@ export default function Modal({ isOpen, onClose, setNotes, setActiveNoteId }) {
           <h2 className="text-sm font-semibold text-gray-900">New note</h2>
           <button
             type="button"
-            onClick={onClose}
+            onClick={closeModal}
             className="text-gray-400 hover:text-gray-700 transition-colors text-lg leading-none"
           >
             ×
@@ -101,7 +90,7 @@ export default function Modal({ isOpen, onClose, setNotes, setActiveNoteId }) {
           <div className="flex items-center justify-end gap-2 pt-1">
             <button
               type="button"
-              onClick={onClose}
+              onClick={closeModal}
               className="text-sm px-4 py-2 rounded-lg text-gray-500 hover:text-gray-900 hover:bg-gray-50 transition-colors"
             >
               Cancel

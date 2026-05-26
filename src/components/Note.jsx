@@ -1,8 +1,9 @@
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 import React from "react";
+import useNotes from "../hooks/useNotes";
 
-function Note({ note, setActiveNoteId, activeNoteId }) {
+function Note({ note }) {
   const {
     attributes,
     listeners,
@@ -14,6 +15,7 @@ function Note({ note, setActiveNoteId, activeNoteId }) {
     id: note.id,
   });
 
+  const { openNote, activeNoteId } = useNotes();
   const style = {
     transform: CSS.Transform.toString(transform),
     transition: transition || "transform 150ms ease",
@@ -26,7 +28,7 @@ function Note({ note, setActiveNoteId, activeNoteId }) {
       style={style}
       {...attributes}
       {...listeners}
-      onClick={() => setActiveNoteId(note.id)}
+      onClick={() => openNote(note.id)}
       className={`
         px-3 flex py-2.5 rounded-lg
         cursor-grab active:cursor-grabbing

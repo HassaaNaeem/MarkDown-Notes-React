@@ -3,36 +3,21 @@ import SidebarHeader from "./SidebarHeader";
 import Search from "./Search";
 import NotesList from "./NotesList";
 import { useDraggable } from "@dnd-kit/react";
+import useNotes from "../hooks/useNotes";
 
-function Sidebar({
-  search,
-  setSearch,
-  setActiveTag,
-  activeTag,
-  filteredNotes,
-  notes,
-  setNotes,
-  activeNoteId,
-  setActiveNoteId,
-  setIsModalOpen,
-}) {
+function Sidebar() {
+  const { handleSelectTag, activeTag, filteredNotes, notes } = useNotes();
+
   const allTags = [
     ...new Set(notes.map((note) => note.tags.map((tag) => tag)).flat()),
   ];
 
-  function handleSelectTag(e) {
-    console.log(e.target);
-    setActiveTag(e.target.innerText);
-  }
   return (
     <aside className="w-64 shrink-0 flex flex-col border-r border-gray-100">
       {/* Sidebar header */}
-      <SidebarHeader
-        setIsModalOpen={setIsModalOpen}
-        setActiveNoteId={setActiveNoteId}
-      />
+      <SidebarHeader />
       {/* Search input */}
-      <Search search={search} setSearch={setSearch} />
+      <Search />
 
       <div className="px-3 pt-3 flex flex-wrap gap-1.5">
         <button
@@ -53,12 +38,7 @@ function Sidebar({
       </div>
 
       {/* Notes list */}
-      <NotesList
-        setNotes={setNotes}
-        filteredNotes={filteredNotes}
-        activeNoteId={activeNoteId}
-        setActiveNoteId={setActiveNoteId}
-      />
+      <NotesList />
     </aside>
   );
 }
