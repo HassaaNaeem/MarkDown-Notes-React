@@ -3,6 +3,7 @@ import { createContext, useMemo, useState } from "react";
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 import { v4 as uuidv4 } from "uuid";
+import { getNotes, saveNotes } from "../utils/storage";
 
 const NotesContext = createContext();
 
@@ -31,7 +32,7 @@ const DUMMY_NOTES = [
 ];
 
 function NotesProvider({ children }) {
-  const [notes, setNotes] = useState(DUMMY_NOTES);
+  const [notes, setNotes] = useState(() => getNotes());
   const [activeNoteId, setActiveNoteId] = useState(null);
   const [search, setSearch] = useState("");
   const [mode, setMode] = useState("split"); // "edit" | "preview" | "split"
@@ -43,6 +44,8 @@ function NotesProvider({ children }) {
 
   let filteredNotes = notes; // <-- replace with your filter logic
   const activeNote = notes.find((n) => n.id === activeNoteId) ?? null;
+
+  saveNotes(filteredNotes);
 
   if (search.length > 0 || activeTag) {
     if (activeTag == "All") setActiveTag(null);

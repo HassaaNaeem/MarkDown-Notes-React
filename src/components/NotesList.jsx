@@ -32,7 +32,7 @@ function NotesList() {
 
     const oldIndex = filteredNotes.findIndex((n) => n.id === active.id);
     const newIndex = filteredNotes.findIndex((n) => n.id === over.id);
-    renderNotes(filteredNotes, oldIndex, newIndex);
+    arrayMove(filteredNotes, oldIndex, newIndex);
   }
 
   return (
