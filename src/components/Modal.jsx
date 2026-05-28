@@ -41,7 +41,10 @@ export default function Modal() {
 
         {/* Form */}
         <form
-          onSubmit={handleSubmit((data) => handleAddNote(data))}
+          onSubmit={handleSubmit((data) => {
+            handleAddNote(data);
+            reset();
+          })}
           className="space-y-4"
         >
           {/* Title */}

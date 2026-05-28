@@ -40,8 +40,6 @@ function NotesProvider({ children }) {
   const [newTag, setNewTag] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  const { reset } = useForm();
-
   let filteredNotes = notes; // <-- replace with your filter logic
   const activeNote = notes.find((n) => n.id === activeNoteId) ?? null;
 
@@ -140,7 +138,6 @@ function NotesProvider({ children }) {
     };
     setNotes((notes) => [newNote, ...notes]);
 
-    reset();
     closeModal();
     setActiveNoteId(newNote.id);
   }
